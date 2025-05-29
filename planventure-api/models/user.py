@@ -15,8 +15,6 @@ class User(db.Model):
         db.DateTime, default=datetime.utcnow, onupdate=datetime.utcnow
     )
 
-    trips = db.relationship("Trip", backref="user")
-
     def __repr__(self):
         return f"<User {self.email}>"
 

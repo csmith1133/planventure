@@ -19,7 +19,10 @@ class Trip(db.Model):
     )
 
     # Relationship
-    user = db.relationship("User", backref=db.backref("trips", lazy=True))
+    user = db.relationship(
+        "User",
+        backref=db.backref("trips", lazy=True, cascade="all, delete-orphan"),
+    )
 
     def __repr__(self):
         return f"<Trip {self.destination}>"

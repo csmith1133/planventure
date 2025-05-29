@@ -8,6 +8,7 @@ from models import User
 from datetime import timedelta
 from utils.jwt import generate_tokens
 from utils.validation import validate_email, validate_password
+from utils.auth_middleware import auth_required
 
 # Load environment variables from .env file
 load_dotenv()
@@ -55,18 +56,50 @@ def invalid_token_callback(error):
     return jsonify({"message": "Invalid token"}), 401
 
 
+@jwt.unauthorized_loader
+def unauthorized_callback(error):
+    return jsonify({"message": "Missing Authorization Header"}), 401
+
+
+@jwt.needs_fresh_token_loader
+def token_not_fresh_callback(jwt_header, jwt_data):
+    return jsonify({"message": "Fresh token required"}), 401
+
+
 @app.route("/auth/login", methods=["POST"])
 def login():
-    data = request.get_json()
-    email = data.get("email")
-    password = data.get("password")
+    try:
+        data = request.get_json()
+        if not data:
+            return jsonify({"message": "No input data provided"}), 400
 
-    user = User.query.filter_by(email=email).first()
-    if user and user.check_password(password):
+        email = data.get("email", "").lower().strip()
+        password = data.get("password", "")
+
+        if not email or not password:
+            return jsonify({"message": "Email and password are required"}), 400
+
+        user = User.query.filter_by(email=email).first()
+        if not user:
+            return jsonify({"message": "Invalid credentials"}), 401
+
+        if not user.check_password(password):
+            return jsonify({"message": "Invalid credentials"}), 401
+
         tokens = generate_tokens(user.id)
-        return jsonify(tokens), 200
+        return (
+            jsonify(
+                {
+                    "message": "Login successful",
+                    "user": {"id": user.id, "email": user.email},
+                    **tokens,
+                }
+            ),
+            200,
+        )
 
-    return jsonify({"message": "Invalid credentials"}), 401
+    except Exception as e:
+        return jsonify({"message": "Login failed"}), 500
 
 
 @app.route("/auth/refresh", methods=["POST"])
@@ -109,6 +142,13 @@ def register():
     except Exception as e:
         db.session.rollback()
         return jsonify({"message": "Registration failed"}), 500
+
+
+# Protected route example
+@app.route("/api/me")
+@auth_required()
+def get_current_user(current_user):
+    return jsonify({"id": current_user.id, "email": current_user.email}), 200
 
 
 if __name__ == "__main__":
