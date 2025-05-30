@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 ## Getting Started 👩🏽‍💻
 
 1. Fork this repository to your GitHub account.
@@ -16,6 +17,14 @@ You can build along with me in this [Youtube video](https://www.youtube.com/watc
 # Planventure API 🚁
 A Flask-based REST API backend for the Planventure application.
 
+=======
+# Planventure API 🚁
+
+[![Open in GitHub Codespaces](https://github.com/codespaces/badge.svg)](https://codespaces.new/github-samples/planventure)
+
+A Flask-based REST API backend for the Planventure application.
+
+>>>>>>> api-start
 ## Prerequisites
 Before you begin, ensure you have the following:
 
