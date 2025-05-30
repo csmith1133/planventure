@@ -9,13 +9,28 @@ from datetime import timedelta
 from utils.jwt import generate_tokens
 from utils.validation import validate_email, validate_password
 from utils.auth_middleware import auth_required
+from blueprints.trips import trips
 
 # Load environment variables from .env file
 load_dotenv()
 
 # Initialize Flask app
 app = Flask(__name__)
-CORS(app)
+
+# CORS Configuration
+CORS(
+    app,
+    resources={
+        r"/*": {
+            "origins": os.getenv("CORS_ORIGINS", "http://localhost:3000").split(","),
+            "methods": ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+            "allow_headers": ["Content-Type", "Authorization"],
+            "expose_headers": ["Content-Range", "X-Content-Range"],
+            "supports_credentials": True,
+            "max_age": 600,
+        }
+    },
+)
 
 # Database configuration
 app.config["SQLALCHEMY_DATABASE_URI"] = os.getenv(
@@ -150,6 +165,9 @@ def register():
 def get_current_user(current_user):
     return jsonify({"id": current_user.id, "email": current_user.email}), 200
 
+
+# Register blueprints
+app.register_blueprint(trips, url_prefix="/api")
 
 if __name__ == "__main__":
     app.run(debug=True)
