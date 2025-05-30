@@ -81,3 +81,47 @@ class Trip(db.Model):
         except Exception as e:
             logging.error(f"Error generating full itinerary: {str(e)}")
             return self.itinerary or {}
+
+    def update_from_dict(self, data: dict) -> tuple[bool, str]:
+        """Update trip attributes from dictionary data."""
+        try:
+            if "destination" in data:
+                self.destination = data["destination"].strip()
+
+            if "start_date" in data or "end_date" in data:
+                # Get current dates as fallback
+                current_start = self.start_date.strftime("%Y-%m-%d")
+                current_end = self.end_date.strftime("%Y-%m-%d")
+
+                # Parse new dates
+                new_start = datetime.strptime(
+                    data.get("start_date", current_start), "%Y-%m-%d"
+                )
+                new_end = datetime.strptime(
+                    data.get("end_date", current_end), "%Y-%m-%d"
+                )
+
+                if new_start > new_end:
+                    return False, "Start date must be before end date"
+
+                self.start_date = new_start
+                self.end_date = new_end
+
+            if "latitude" in data:
+                if not isinstance(data["latitude"], (int, float)):
+                    return False, "Latitude must be a number"
+                self.latitude = data["latitude"]
+
+            if "longitude" in data:
+                if not isinstance(data["longitude"], (int, float)):
+                    return False, "Longitude must be a number"
+                self.longitude = data["longitude"]
+
+            if "itinerary" in data:
+                self.itinerary = data["itinerary"]
+
+            return True, "Success"
+        except ValueError:
+            return False, "Invalid date format. Use YYYY-MM-DD"
+        except Exception as e:
+            return False, str(e)

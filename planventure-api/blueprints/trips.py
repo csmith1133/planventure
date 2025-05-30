@@ -136,18 +136,66 @@ def update_trip(current_user, trip_id):
         if not trip:
             return jsonify({"message": "Trip not found"}), 404
 
-        trip.destination = data.get("destination", trip.destination)
-        trip.start_date = data.get("start_date", trip.start_date)
-        trip.end_date = data.get("end_date", trip.end_date)
-        trip.latitude = data.get("latitude", trip.latitude)
-        trip.longitude = data.get("longitude", trip.longitude)
-        trip.itinerary = data.get("itinerary", trip.itinerary)
+        # Update destination if provided
+        if "destination" in data:
+            trip.destination = data["destination"].strip()
+
+        # Handle date updates with validation
+        if "start_date" in data or "end_date" in data:
+            from datetime import datetime
+
+            new_start = datetime.strptime(
+                data.get("start_date", trip.start_date.strftime("%Y-%m-%d")), "%Y-%m-%d"
+            )
+            new_end = datetime.strptime(
+                data.get("end_date", trip.end_date.strftime("%Y-%m-%d")), "%Y-%m-%d"
+            )
+
+            if new_start > new_end:
+                return jsonify({"message": "Start date must be before end date"}), 400
+
+            trip.start_date = new_start
+            trip.end_date = new_end
+
+        # Update coordinates if provided
+        if "latitude" in data:
+            if not isinstance(data["latitude"], (int, float)):
+                return jsonify({"message": "Latitude must be a number"}), 400
+            trip.latitude = data["latitude"]
+
+        if "longitude" in data:
+            if not isinstance(data["longitude"], (int, float)):
+                return jsonify({"message": "Longitude must be a number"}), 400
+            trip.longitude = data["longitude"]
+
+        # Update itinerary if provided
+        if "itinerary" in data:
+            trip.itinerary = data["itinerary"]
 
         db.session.commit()
-        return jsonify({"message": "Trip updated successfully"}), 200
+        return (
+            jsonify(
+                {
+                    "message": "Trip updated successfully",
+                    "trip": {
+                        "id": trip.id,
+                        "destination": trip.destination,
+                        "start_date": trip.start_date.strftime("%Y-%m-%d"),
+                        "end_date": trip.end_date.strftime("%Y-%m-%d"),
+                        "latitude": trip.latitude,
+                        "longitude": trip.longitude,
+                        "itinerary": trip.itinerary,
+                    },
+                }
+            ),
+            200,
+        )
+    except ValueError as e:
+        db.session.rollback()
+        return jsonify({"message": "Invalid date format. Use YYYY-MM-DD"}), 400
     except Exception as e:
         db.session.rollback()
-        return jsonify({"message": "Failed to update trip"}), 500
+        return jsonify({"message": f"Failed to update trip: {str(e)}"}), 500
 
 
 @trips.route("/trips/<int:trip_id>", methods=["DELETE"])
