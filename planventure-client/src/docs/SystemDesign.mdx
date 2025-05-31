@@ -1,0 +1,25 @@
+# System Architecture
+
+## Overview
+
+```mermaid
+graph TD
+    A[Client] --> B[API Gateway]
+    B --> C[Auth Service]
+    B --> D[Data Service]
+    D --> E[(Database)]
+```
+
+## Key Components
+
+- **Frontend**: React + TypeScript
+- **Backend**: Flask + SQLAlchemy
+- **Database**: PostgreSQL
+- **Authentication**: JWT + OAuth2
+
+## Security Measures
+
+1. JWT-based authentication
+2. CORS protection
+3. Password hashing with bcrypt
+4. Rate limiting

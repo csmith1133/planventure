@@ -1,0 +1,243 @@
+/* Font family variable */
+:root {
+  --system-font: -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro", "Helvetica Neue", sans-serif;
+}
+
+.documentation-container {
+  margin-top: 32px;
+  display: flex;
+  flex-direction: column;
+  min-height: calc(100vh - 64px);
+  width: 100%;
+  font-family: var(--system-font);
+}
+
+.documentation-header {
+  padding: 1.5rem;
+  background: #fff;
+  border-bottom: 1px solid #eee;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+}
+
+.documentation-header h1 {
+  font-family: var(--system-font);
+  font-size: 24px;
+  font-weight: 600;
+  color: #232323;
+  margin: 0;
+}
+
+.documentation-header .MuiSelect-select {
+  transition: background-color 0.2s ease-in-out;
+}
+
+.documentation-header .MuiMenuItem-root {
+  transition: all 0.2s ease-in-out;
+}
+
+.documentation-header .MuiPaper-root {
+  transform-origin: top;
+  transition: opacity 0.2s ease-in-out, transform 0.2s ease-in-out;
+}
+
+.documentation-layout {
+  display: flex;
+  flex: 1;
+  width: 100%;
+}
+
+.documentation-sidebar {
+  width: 280px;
+  border-right: 1px solid #eee;
+  padding: 1.5rem;
+  background: #fff;
+}
+
+.sidebar-section {
+  margin-bottom: 1.5rem;
+}
+
+.sidebar-section h3 {
+  font-family: var(--system-font);
+  font-size: 14px;
+  font-weight: 600;
+  color: #232323;
+  margin-bottom: 12px;
+  padding: 0;
+  text-align: left;
+}
+
+.sidebar-link {
+  text-align: left;
+  padding: 6px 0;
+  display: block;
+  font-size: 13px;
+  color: #666;
+  text-decoration: none;
+}
+
+.sidebar-subsection {
+  margin-left: 12px;
+}
+
+.sidebar-sublink {
+  text-align: left;
+  padding: 6px 0;
+  display: block;
+  font-size: 13px;
+  color: #666;
+  text-decoration: none;
+}
+
+.sidebar-link:hover,
+.sidebar-sublink:hover {
+  color: #333;
+}
+
+.documentation-main {
+  flex: 1;
+  padding: 2rem 3rem;
+  background: #fff;
+  width: 100%;
+  text-align: left;
+}
+
+.documentation-main h1 {
+  font-family: var(--system-font);
+  font-size: 22px;
+  font-weight: 600;
+  color: #232323;
+  margin-bottom: 12px;
+}
+
+.documentation-main h2 {
+  font-family: var(--system-font);
+  font-size: 20px;
+  font-weight: 600;
+  color: #232323;
+  margin: 24px 0 12px;
+}
+
+.documentation-main h3 {
+  font-family: var(--system-font);
+  font-size: 18px;
+  font-weight: 600;
+  color: #232323;
+  margin: 20px 0 10px;
+}
+
+.documentation-main p {
+  font-family: var(--system-font);
+  font-size: 14px;
+  line-height: 1.5;
+  color: #444;
+  text-align: left;
+  margin: 0;
+  padding: 0;
+}
+
+.documentation-content {
+  background: white;
+  padding: 2rem;
+  border-radius: 8px;
+  text-align: left;
+}
+
+.documentation-content h1,
+.documentation-content h2,
+.documentation-content h3 {
+  scroll-margin-top: 84px;
+}
+
+.documentation-content h2 {
+  color: #232323;
+  margin-bottom: 0.5rem;
+}
+
+.documentation-content .description {
+  color: #666;
+  margin-bottom: 2rem;
+}
+
+.documentation-content section {
+  width: 100%;
+  margin-bottom: 2rem;
+}
+
+.documentation-content h3 {
+  color: #232323;
+  margin-bottom: 1rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 2px solid #96DC14;
+}
+
+.documentation-content pre {
+  background: #f5f5f5;
+  padding: 1rem;
+  border-radius: 4px;
+  overflow-x: auto;
+}
+
+.documentation-content table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 1rem 0;
+}
+
+.documentation-content th,
+.documentation-content td {
+  padding: 0.75rem;
+  border: 1px solid #ddd;
+  text-align: left;
+}
+
+.documentation-content th {
+  background: #f5f5f5;
+  font-weight: 600;
+}
+
+.documentation-content .api-endpoint {
+  margin: 1rem 0;
+  padding: 1rem;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.documentation-content .method {
+  display: inline-block;
+  padding: 0.25rem 0.5rem;
+  border-radius: 4px;
+  font-weight: 600;
+  margin-right: 0.5rem;
+}
+
+.documentation-content .method.get { background: #e3f2fd; }
+.documentation-content .method.post { background: #e8f5e9; }
+.documentation-content .method.put { background: #fff3e0; }
+.documentation-content .method.delete { background: #ffebee; }
+
+.documentation-content .mermaid {
+  background: white;
+  padding: 1rem;
+  border-radius: 4px;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+}
+
+/* Adjust dropdown animation */
+.MuiSelect-root.Mui-focused + .MuiSelect-popper {
+  animation: dropdownFade 0.2s ease-in-out;
+}
+
+@keyframes dropdownFade {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

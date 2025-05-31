@@ -1,0 +1,8 @@
+toc:
+  - name: Introduction
+    description: PlanVenture API Documentation
+  - name: Authentication
+    description: Authentication endpoints and flows
+  - name: API Reference
+    description: Complete API endpoint documentation
+theme: default

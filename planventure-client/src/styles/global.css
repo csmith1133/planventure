@@ -1,0 +1,23 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@500&display=swap');
+
+/* Reset default styles */
+body {
+  margin: 0;
+  padding: 0;
+  font-family: system-ui, -apple-system, sans-serif;
+  background-color: #fff;
+  color: #171717;
+}
+
+#root {
+  min-height: 100vh;
+  min-width: 100vw;
+}
+
+/* Remove dark theme override */
+@media (prefers-color-scheme: dark) {
+  :root {
+    color: #171717;
+    background-color: #ffffff;
+  }
+}

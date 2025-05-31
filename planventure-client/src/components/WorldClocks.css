@@ -1,0 +1,109 @@
+.world-clocks {
+  padding: 1rem;
+  background: #fff;
+  margin-top: .5rem;
+}
+
+.clocks-grid {
+  display: grid;
+  grid-template-columns: repeat(8, 1fr);
+  gap: 0.5rem;
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+.clock-card {
+  background: #f8f8f8;
+  border-radius: 4px;
+  padding: 0.75rem;
+  min-width: 150px;
+}
+
+.clock-card:last-child {
+  background: #232323;
+  border: 1px solid #96DC14;
+}
+
+.clock-main {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.clock-time {
+  font-size: 20px;
+  font-weight: 600;
+  color: #232323;
+  margin-bottom: 2px;
+}
+
+.clock-card:last-child .clock-time {
+  color: #96DC14;
+}
+
+.clock-location {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.city-name {
+  font-size: 13px;
+  font-weight: 500;
+  color: #232323;
+}
+
+.clock-card:last-child .city-name,
+.clock-card:last-child .location-details {
+  color: #fff;
+}
+
+.zone-diff {
+  display: flex;
+  gap: 6px;
+  align-items: center;
+  font-size: 11px;
+  color: #666;
+}
+
+.clock-card:last-child .zone-diff {
+  color: #96DC14;
+}
+
+.diff {
+  color: #009646;
+  font-weight: 600;
+}
+
+.location-details {
+  font-size: 11px;
+  color: #666;
+  margin-top: 2px;
+}
+
+.clock-card:last-child .location-details {
+  color: #fff;
+}
+
+.local-time {
+  background: rgba(150, 220, 20, 0.05);
+  border: 1px solid #96DC14;
+}
+
+@media (max-width: 1400px) {
+  .clocks-grid {
+    grid-template-columns: repeat(6, 1fr);
+  }
+}
+
+@media (max-width: 1024px) {
+  .clocks-grid {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+@media (max-width: 768px) {
+  .clocks-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}

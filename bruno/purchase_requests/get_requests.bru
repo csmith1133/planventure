@@ -1,0 +1,12 @@
+meta {
+  name: Get Purchase Requests
+  type: http
+  seq: 1
+}
+
+get {
+  url: http://localhost:5000/api/forms/purchase-requests
+  headers: {
+    Authorization: Bearer {{auth_token}}
+  }
+}

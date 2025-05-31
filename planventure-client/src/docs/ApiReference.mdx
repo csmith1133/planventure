@@ -1,0 +1,32 @@
+# API Reference
+
+## Authentication
+
+### Login
+```typescript
+POST /api/auth/login
+{
+  "email": "user@example.com",
+  "password": "yourpassword"
+}
+```
+
+### Register
+```typescript
+POST /api/auth/register
+{
+  "email": "user@example.com",
+  "password": "yourpassword"
+}
+```
+
+## Using JWT Tokens
+
+```typescript
+// Example API call with authentication
+const response = await fetch('/api/protected-route', {
+  headers: {
+    'Authorization': `Bearer ${token}`
+  }
+});
+```
