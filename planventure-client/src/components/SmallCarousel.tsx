@@ -1,16 +1,10 @@
 import { useEffect, useRef, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { projects } from '../data/projects';
 import './SmallCarousel.css';
 
-const images = [
-  { url: 'https://images.unsplash.com/photo-1508138221679-760a23a2285b', title: 'Project 1' },
-  { url: 'https://images.unsplash.com/photo-1485550409059-9afb054cada4', title: 'Project 2' },
-  { url: 'https://images.unsplash.com/photo-1519125323398-675f0ddb6308', title: 'Project 3' },
-  { url: 'https://images.unsplash.com/photo-1429087969512-1e85aab2683d', title: 'Project 4' },
-  { url: 'https://images.unsplash.com/photo-1505678261036-a3fcc5e884ee', title: 'Project 5' },
-  { url: 'https://images.unsplash.com/photo-1473186505569-9c61870c11f9', title: 'Project 6' }
-];
-
 export default function SmallCarousel() {
+  const navigate = useNavigate();
   const [currentIndex, setCurrentIndex] = useState(0);
   const carouselRef = useRef<HTMLDivElement>(null);
 
@@ -23,15 +17,27 @@ export default function SmallCarousel() {
         
         if (index === 0) {
             carouselRef.current.style.transform = 'translateX(0)';
-        } else if (index === images.length - 1) {
+        } else if (index === projects.length - 1) {
             // New calculation for last slide to align to right edge
-            const fullWidth = images.length * (slideWidth + margin);
+            const fullWidth = projects.length * (slideWidth + margin);
             const offset = fullWidth - 100 + 1; // 16px from right edge
             carouselRef.current.style.transform = `translateX(-${offset}vw)`;
         } else {
             const offset = index * (slideWidth + margin) - viewportCenter + (margin / 2);
             carouselRef.current.style.transform = `translateX(-${offset}vw)`;
         }
+    }
+  };
+
+  const handleLearnMore = (projectId: string) => {
+    navigate(`/documentation?project=${projectId}`);
+  };
+
+  const handleProjectClick = (projectLink: string, isExternal: boolean = false) => {
+    if (isExternal) {
+      window.open(projectLink, '_blank');
+    } else {
+      navigate(projectLink);
     }
   };
 
@@ -45,7 +51,7 @@ export default function SmallCarousel() {
         const diff = startX - touch.clientX;
 
         if (Math.abs(diff) > 50) {
-          if (diff > 0 && currentIndex < images.length - 1) {
+          if (diff > 0 && currentIndex < projects.length - 1) {
             handleDotClick(currentIndex + 1);
           } else if (diff < 0 && currentIndex > 0) {
             handleDotClick(currentIndex - 1);
@@ -71,21 +77,35 @@ export default function SmallCarousel() {
   return (
     <div className="small-carousel-section">
       <div className="small-carousel" ref={carouselRef}>
-        {images.map((image, index) => (
+        {projects.map((project, index) => (
           <div
-            key={index}
+            key={project.id}
             className="small-carousel-slide"
-            style={{ backgroundImage: `url(${image.url})` }}
+            style={{ backgroundImage: `url(${project.imageUrl})` }}
           >
             <div className="small-carousel-content">
-              <h2>{image.title}</h2>
+              <h2>{project.title}</h2>
+              <div className="carousel-buttons">
+                <button 
+                  className="carousel-btn go-to-project"
+                  onClick={() => handleProjectClick(project.url, project.isExternal)}
+                >
+                  Go to Project
+                </button>
+                <button 
+                  className="carousel-btn learn-more"
+                  onClick={() => handleLearnMore(project.id)}
+                >
+                  Learn More
+                </button>
+              </div>
             </div>
           </div>
         ))}
       </div>
 
       <div className="small-carousel-dots">
-        {images.map((_, index) => (
+        {projects.map((_, index) => (
           <button
             key={index}
             className={`small-carousel-dot ${index === currentIndex ? 'active' : ''}`}

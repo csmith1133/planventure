@@ -3,6 +3,7 @@ import { Avatar } from '@mui/material';
 import axios from 'axios';
 import { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
+import { projects } from '../data/projects';
 import PurchaseRequestModal from './forms/PurchaseRequestModal';
 import './Navbar.css';
 
@@ -49,36 +50,39 @@ export default function Navbar() {
   const [activeLink, setActiveLink] = useState<string | null>(null);
   const [userInitial, setUserInitial] = useState('?');
   const [showUserMenu, setShowUserMenu] = useState(false);
+  const [showProjectsMenu, setShowProjectsMenu] = useState(false);
   const navigate = useNavigate();
 
   useEffect(() => {
     const token = localStorage.getItem('access_token');
     
-    if (token) {
-      try {
-        const parts = token.split('.');
-        const payload = JSON.parse(atob(parts[1]));
+    if (!token) {
+      setUserInitial('?');
+      return;
+    }
 
-        // Make API call to get user details with correct base URL
-        axios.get('http://localhost:5000/api/me', {
-          headers: {
-            'Authorization': `Bearer ${token}`
-          }
-        })
-        .then(response => {
-          if (response.data.email) {
-            setUserInitial(response.data.email[0].toUpperCase());
-          }
-        })
-        .catch(err => {
-          console.error('Failed to fetch user details:', err);
-          setUserInitial('?');
-        });
+    try {
+      const parts = token.split('.');
+      const payload = JSON.parse(atob(parts[1]));
 
-      } catch (e) {
-        console.error('Token parsing error:', e);
+      axios.get('http://localhost:5000/api/me', {
+        headers: {
+          'Authorization': `Bearer ${token}`
+        }
+      })
+      .then(response => {
+        if (response.data.email) {
+          setUserInitial(response.data.email[0].toUpperCase());
+        }
+      })
+      .catch(err => {
+        console.error('Failed to fetch user details:', err);
         setUserInitial('?');
-      }
+      });
+
+    } catch (e) {
+      console.error('Token parsing error:', e);
+      setUserInitial('?');
     }
   }, []);
 
@@ -104,6 +108,13 @@ export default function Navbar() {
   };
   const handleUserMouseEnter = () => setShowUserMenu(true);
   const handleUserMouseLeave = () => setShowUserMenu(false);
+  const handleProjectClick = (viewPath: string, isExternal: boolean) => {
+    if (isExternal) {
+      window.open(viewPath, '_blank');
+    } else {
+      navigate(viewPath);
+    }
+  };
 
   return (
     <nav className="navbar">
@@ -113,13 +124,40 @@ export default function Navbar() {
         </Link>
         
         <div className="navbar-center">
-          <Link 
-            to="/dashboard" 
-            onClick={handleClick}
-            className={activeLink === '/dashboard' ? 'active' : ''}
-          >
+          <Link to="/dashboard" onClick={handleClick} className={activeLink === '/dashboard' ? 'active' : ''}>
             Home
           </Link>
+          <div 
+            className="nav-item"
+            onMouseEnter={() => setShowProjectsMenu(true)}
+            onMouseLeave={() => setShowProjectsMenu(false)}
+          >
+            <span className="nav-button">Projects</span>
+            <div className={`forms-flyout ${showProjectsMenu ? 'active' : ''}`}>
+              <div className="forms-content">
+                <div className="forms-grid">
+                  {projects.map(project => (
+                    <div key={project.id} className="form-item">
+                      <div className="form-main">
+                        <div className="form-info">
+                          <div className="form-name">{project.title}</div>
+                          <div className="form-description">{project.description}</div>
+                        </div>
+                        <div className="form-actions">
+                          <button 
+                            onClick={() => handleProjectClick(project.url, project.isExternal)}
+                            className="action-button"
+                          >
+                            {project.isExternal ? 'Open External' : 'Open Project'}
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
+          </div>
           <div 
             className="nav-item"
             onMouseEnter={handleMouseEnter}

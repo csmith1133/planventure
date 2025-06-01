@@ -1,9 +1,10 @@
 import { CssBaseline } from '@mui/material';
 import { GoogleOAuthProvider } from '@react-oauth/google';
 import { useEffect, useState } from 'react';
-import { BrowserRouter, Navigate, Route, Routes, useLocation, useNavigate, useSearchParams } from 'react-router-dom';
+import { BrowserRouter, Navigate, Outlet, Route, Routes, useLocation, useNavigate, useSearchParams } from 'react-router-dom';
 import './App.css';
 import Documentation from './components/Documentation';
+import TopVariancesDoc from './components/documentation/TopVariancesDoc';
 import Footer from './components/Footer';
 import Navbar from './components/Navbar';
 import Dashboard from './pages/Dashboard';
@@ -51,6 +52,14 @@ function GoogleCallback() {
 // Auth routes that should not show navbar
 const authRoutes = ['/login', '/register', '/reset-password', '/forgot-password'];
 
+const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
+  const token = localStorage.getItem('access_token');
+  if (!token) {
+    return <Navigate to="/login" replace />;
+  }
+  return <>{children}</>;
+};
+
 function App() {
   const location = useLocation();
   const isAuthPage = authRoutes.includes(location.pathname);
@@ -78,6 +87,16 @@ function App() {
             } 
           />
           <Route path="/documentation" element={<Documentation />} />
+          <Route path="/documentation/top-variances" element={<TopVariancesDoc />} />
+          <Route path="/" element={
+            <ProtectedRoute>
+              <Outlet />
+            </ProtectedRoute>
+          }>
+            <Route path="/dashboard" element={<Dashboard />} />
+            <Route path="/documentation" element={<Documentation />} />
+            {/* ...other protected routes... */}
+          </Route>
           <Route path="*" element={<Navigate to="/dashboard" replace />} /> {/* Move catch-all route to end */}
         </Routes>
       </div>

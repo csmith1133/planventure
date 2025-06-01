@@ -1,0 +1,27 @@
+.documentation-content {
+  padding: 2rem;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.documentation-section {
+  margin-bottom: 2rem;
+}
+
+.api-endpoint {
+  background: #f8f9fa;
+  padding: 1rem;
+  border-radius: 4px;
+  margin: 1rem 0;
+}
+
+.method {
+  display: inline-block;
+  padding: 0.25rem 0.5rem;
+  border-radius: 4px;
+  font-weight: 600;
+  margin-right: 0.5rem;
+}
+
+.method.get { background: #e3f2fd; }
+.method.post { background: #e8f5e9; }

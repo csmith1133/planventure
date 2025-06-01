@@ -1,0 +1,55 @@
+.metrics-container {
+    display: flex;
+    justify-content: center;
+    gap: 4rem;
+    padding: 3rem 2rem;
+    background: #fff;
+    margin: 1rem auto;
+    max-width: 1200px;
+  }
+  
+  .metric-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    min-width: 150px;
+  }
+  
+  .metric-value {
+    font-size: 2.8rem;
+    font-weight: 500;
+    color: #171717;
+    margin-bottom: 0.5rem;
+    font-family: "SF Pro Display", -apple-system, BlinkMacSystemFont, sans-serif;
+  }
+  
+  .metric-details {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+  }
+  
+  .metric-label {
+    font-size: 1rem;
+    font-weight: 500;
+    color: #171717;
+  }
+  
+  .metric-sublabel {
+    font-size: 0.875rem;
+    color: #666;
+  }
+  
+  @media (max-width: 768px) {
+    .metrics-container {
+      flex-direction: column;
+      gap: 2rem;
+      padding: 2rem 1rem;
+    }
+  
+    .metric-value {
+      font-size: 2.4rem;
+    }
+  }
+  

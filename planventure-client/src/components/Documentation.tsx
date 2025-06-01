@@ -1,254 +1,35 @@
 import { Check as CheckIcon } from '@mui/icons-material';
 import { MenuItem, Select } from '@mui/material';
-import mermaid from 'mermaid';
 import { useEffect, useState } from 'react';
-import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
-import { tomorrow } from 'react-syntax-highlighter/dist/esm/styles/prism';
+import { useSearchParams } from 'react-router-dom';
+import { documentation } from '../data/documentation';
+import { projects } from '../data/projects';
 import './Documentation.css';
 
-interface Project {
-  id: string;
-  name: string;
-  description: string;
-  documentation: {
-    overview: string;
-    flowchart?: string;
-    setup: string;
-    usage: string;
-    api?: {
-      endpoints: Array<{
-        method: string;
-        path: string;
-        description: string;
-        parameters?: Record<string, string>;
-      }>;
-    };
-    code_examples?: Array<{
-      language: string;
-      title: string;
-      code: string;
-    }>;
-    tables?: Array<{
-      title: string;
-      headers: string[];
-      rows: string[][];
-    }>;
-    content: string;
-  };
-}
-
-const projects: Project[] = [
-  {
-    id: 'project-1',
-    name: 'Purchase Request System',
-    description: 'Digital purchase request and approval workflow',
-    documentation: {
-      overview: 'A streamlined system for managing purchase requests and approvals.',
-      flowchart: `
-        graph TD
-          A[Employee] --> B[Submit Request]
-          B --> C{Manager Review}
-          C -->|Approved| D[Finance Review]
-          C -->|Rejected| E[Return to Employee]
-          D -->|Approved| F[Purchase Order]
-          D -->|Rejected| E
-      `,
-      setup: '## Installation\n```bash\nnpm install @company/purchase-system\n```',
-      usage: 'Import and initialize the system:\n```typescript\nimport { PurchaseSystem } from "@company/purchase-system";\n\nconst system = new PurchaseSystem();\n```',
-      api: {
-        endpoints: [
-          {
-            method: 'POST',
-            path: '/api/forms/purchase-request',
-            description: 'Create a new purchase request',
-            parameters: {
-              'item_name': 'string',
-              'amount': 'number',
-              'justification': 'string'
-            }
-          }
-        ]
-      },
-      tables: [
-        {
-          title: 'Approval Thresholds',
-          headers: ['Level', 'Amount', 'Approvers Required'],
-          rows: [
-            ['1', 'Up to $1,000', '1 Manager'],
-            ['2', '$1,001 - $10,000', '1 Manager + 1 Director'],
-            ['3', '$10,001+', '1 Manager + 1 Director + CFO']
-          ]
-        }
-      ],
-      content: `
-        # Purchase Request System Documentation
-
-        ## Overview
-        A streamlined system for managing purchase requests and approvals.
-
-        ## Flowchart
-        \`\`\`mermaid
-        graph TD
-          A[Employee] --> B[Submit Request]
-          B --> C{Manager Review}
-          C -->|Approved| D[Finance Review]
-          C -->|Rejected| E[Return to Employee]
-          D -->|Approved| F[Purchase Order]
-          D -->|Rejected| E
-        \`\`\`
-
-        ## Setup
-        \`\`\`bash
-        npm install @company/purchase-system
-        \`\`\`
-
-        ## Usage
-        \`\`\`typescript
-        import { PurchaseSystem } from "@company/purchase-system";
-
-        const system = new PurchaseSystem();
-        \`\`\`
-
-        ## API Reference
-        \`\`\`json
-        {
-          "endpoints": [
-            {
-              "method": "POST",
-              "path": "/api/forms/purchase-request",
-              "description": "Create a new purchase request",
-              "parameters": {
-                "item_name": "string",
-                "amount": "number",
-                "justification": "string"
-              }
-            }
-          ]
-        }
-        \`\`\`
-
-        ## Tables
-
-        ### Approval Thresholds
-
-        | Level | Amount         | Approvers Required            |
-        |-------|----------------|-------------------------------|
-        | 1     | Up to $1,000   | 1 Manager                     |
-        | 2     | $1,001 - $10,000 | 1 Manager + 1 Director       |
-        | 3     | $10,001+       | 1 Manager + 1 Director + CFO |
-      `
-    }
-  },
-  {
-    id: 'project-2',
-    name: 'Travel Request System',
-    description: 'Travel request and approval management',
-    documentation: {
-      overview: 'Manage travel requests and approvals efficiently.',
-      flowchart: `
-        graph LR
-          A[Submit] --> B[Review]
-          B --> C[Approve]
-          B --> D[Reject]
-      `,
-      setup: '## Quick Start\n```bash\nyarn add @company/travel-system\n```',
-      usage: 'Basic implementation example',
-      api: {
-        endpoints: [
-          {
-            method: 'POST',
-            path: '/api/forms/travel-request',
-            description: 'Submit travel request'
-          }
-        ]
-      },
-      content: `
-        # Travel Request System Documentation
-
-        ## Overview
-        Manage travel requests and approvals efficiently.
-
-        ## Flowchart
-        \`\`\`mermaid
-        graph LR
-          A[Submit] --> B[Review]
-          B --> C[Approve]
-          B --> D[Reject]
-        \`\`\`
-
-        ## Setup
-        \`\`\`bash
-        yarn add @company/travel-system
-        \`\`\`
-
-        ## Usage
-        Basic implementation example
-
-        ## API Reference
-        \`\`\`json
-        {
-          "endpoints": [
-            {
-              "method": "POST",
-              "path": "/api/forms/travel-request",
-              "description": "Submit travel request"
-            }
-          ]
-        }
-        \`\`\`
-      `
-    }
-  }
-];
-
-// Initialize mermaid
-mermaid.initialize({
-  startOnLoad: true,
-  theme: 'default',
-  securityLevel: 'loose'
-});
-
 export default function Documentation() {
-  const [selectedProject, setSelectedProject] = useState<string>(projects[0].id);
-  const currentProject = projects.find(p => p.id === selectedProject);
+  const [searchParams] = useSearchParams();
+  const projectParam = searchParams.get('project');
+  const [selectedProject, setSelectedProject] = useState<string>(
+    projectParam && projects.find(p => p.id === projectParam) 
+      ? projectParam 
+      : projects[0].id
+  );
 
   useEffect(() => {
-    // Initialize mermaid diagrams after render
-    mermaid.contentLoaded();
+    window.scrollTo(0, 0);
   }, [selectedProject]);
 
   const handleProjectChange = (event: React.ChangeEvent<{ value: unknown }>) => {
     setSelectedProject(event.target.value as string);
   };
 
-  const components = {
-    code({ node, inline, className, children, ...props }: any) {
-      const match = /language-(\w+)/.exec(className || '');
-      if (inline) {
-        return <code className={className} {...props}>{children}</code>;
-      }
-      
-      if (className === 'language-mermaid') {
-        return <div className="mermaid">{children}</div>;
-      }
-      
-      return (
-        <SyntaxHighlighter
-          style={tomorrow}
-          language={match ? match[1] : 'text'}
-          PreTag="div"
-          {...props}
-        >
-          {String(children).replace(/\n$/, '')}
-        </SyntaxHighlighter>
-      );
-    }
-  };
+  const currentProject = projects.find(p => p.id === selectedProject);
+  const currentDoc = documentation[selectedProject];
 
   return (
     <div className="documentation-container">
       <div className="documentation-header">
-        <h1>{currentProject?.name} Documentation</h1>
+        <h1>{currentProject?.title} Documentation</h1>
         <div className="documentation-selector">
           <Select
             value={selectedProject}
@@ -271,12 +52,13 @@ export default function Documentation() {
                 border: '1px solid #ddd'
               },
               '& .MuiSelect-select': {
-                padding: '8px 14px'
+                padding: '8px 14px',
+                textAlign: 'left'
               }
             }}
             renderValue={(selected) => {
               const project = projects.find(p => p.id === selected);
-              return project?.name;
+              return project?.title;
             }}
             MenuProps={{
               PaperProps: {
@@ -289,8 +71,9 @@ export default function Documentation() {
                     fontFamily: '-apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro", "Helvetica Neue", sans-serif',
                     padding: '12px 16px',
                     display: 'flex',
-                    justifyContent: 'space-between',
+                    justifyContent: 'flex-start',
                     alignItems: 'center',
+                    textAlign: 'left',
                     '&:hover': {
                       backgroundColor: 'rgba(0,0,0,0.04)'
                     },
@@ -307,7 +90,7 @@ export default function Documentation() {
           >
             {projects.map(project => (
               <MenuItem key={project.id} value={project.id}>
-                {project.name}
+                {project.title}
                 {project.id === selectedProject && (
                   <CheckIcon sx={{ ml: 1, fontSize: 16, color: '#666' }} />
                 )}
@@ -321,53 +104,57 @@ export default function Documentation() {
         <nav className="documentation-sidebar">
           <div className="sidebar-section">
             <h3>Overview</h3>
-            <a href="#overview" className="sidebar-link">Overview</a>
-            <a href="#setup" className="sidebar-link">Setup</a>
-            <a href="#usage" className="sidebar-link">Usage</a>
-            <a href="#api" className="sidebar-link">API Reference</a>
+            <button onClick={() => document.getElementById('overview')?.scrollIntoView({ behavior: 'smooth' })} className="sidebar-link">Overview</button>
+            <button onClick={() => document.getElementById('setup')?.scrollIntoView({ behavior: 'smooth' })} className="sidebar-link">Setup</button>
+            <button onClick={() => document.getElementById('usage')?.scrollIntoView({ behavior: 'smooth' })} className="sidebar-link">Usage</button>
+            <button onClick={() => document.getElementById('api')?.scrollIntoView({ behavior: 'smooth' })} className="sidebar-link">API Reference</button>
           </div>
 
           <div className="sidebar-section">
             <h3>API Endpoints</h3>
-            <a href="#create-request" className="sidebar-link">Create Request</a>
-            <a href="#view-requests" className="sidebar-link">View Requests</a>
-            <a href="#update-request" className="sidebar-link">Update Request</a>
+            <button onClick={() => document.getElementById('create-request')?.scrollIntoView({ behavior: 'smooth' })} className="sidebar-link">Create Request</button>
+            <button onClick={() => document.getElementById('view-requests')?.scrollIntoView({ behavior: 'smooth' })} className="sidebar-link">View Requests</button>
+            <button onClick={() => document.getElementById('update-request')?.scrollIntoView({ behavior: 'smooth' })} className="sidebar-link">Update Request</button>
             <div className="sidebar-subsection">
-              <a href="#status-codes" className="sidebar-sublink">Status Codes</a>
-              <a href="#error-handling" className="sidebar-sublink">Error Handling</a>
+              <button onClick={() => document.getElementById('status-codes')?.scrollIntoView({ behavior: 'smooth' })} className="sidebar-sublink">Status Codes</button>
+              <button onClick={() => document.getElementById('error-handling')?.scrollIntoView({ behavior: 'smooth' })} className="sidebar-sublink">Error Handling</button>
             </div>
           </div>
         </nav>
 
         <main className="documentation-main">
-          <h1>{currentProject?.name}</h1>
+          <h1>{currentProject?.title}</h1>
           <p>{currentProject?.description}</p>
           
-          <section>
-            <h2>Overview</h2>
-            <p>{currentProject?.documentation.overview}</p>
-          </section>
+          {currentDoc && (
+            <>
+              <section id="overview">
+                <h2>Overview</h2>
+                <p>{currentDoc.overview}</p>
+              </section>
 
-          <section>
-            <h2>Setup</h2>
-            <p>{currentProject?.documentation.setup}</p>
-          </section>
+              <section id="setup">
+                <h2>Setup</h2>
+                <p>{currentDoc.setup}</p>
+              </section>
 
-          <section>
-            <h2>Usage</h2>
-            <p>{currentProject?.documentation.usage}</p>
-          </section>
+              <section id="usage">
+                <h2>Usage</h2>
+                <p>{currentDoc.usage}</p>
+              </section>
 
-          {currentProject?.documentation.api && (
-            <section>
-              <h2>API Reference</h2>
-              {currentProject.documentation.api.endpoints.map((endpoint, index) => (
-                <div key={index}>
-                  <h3>{endpoint.method} {endpoint.path}</h3>
-                  <p>{endpoint.description}</p>
-                </div>
-              ))}
-            </section>
+              {currentDoc.api && (
+                <section id="api">
+                  <h2>API Reference</h2>
+                  {currentDoc.api.endpoints.map((endpoint, index) => (
+                    <div key={index} className="api-endpoint">
+                      <h3>{endpoint.method} {endpoint.path}</h3>
+                      <p>{endpoint.description}</p>
+                    </div>
+                  ))}
+                </section>
+              )}
+            </>
           )}
         </main>
       </div>
