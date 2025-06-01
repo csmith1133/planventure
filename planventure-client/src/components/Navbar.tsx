@@ -136,7 +136,9 @@ export default function Navbar() {
             <div className={`forms-flyout ${showProjectsMenu ? 'active' : ''}`}>
               <div className="forms-content">
                 <div className="forms-grid">
-                  {projects.map(project => (
+                  {projects
+                    .filter(project => !project.documentationOnly)
+                    .map(project => (
                     <div key={project.id} className="form-item">
                       <div className="form-main">
                         <div className="form-info">

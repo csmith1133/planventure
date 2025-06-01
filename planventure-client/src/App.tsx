@@ -1,5 +1,6 @@
 import { CssBaseline } from '@mui/material';
 import { GoogleOAuthProvider } from '@react-oauth/google';
+import axios from 'axios';
 import { useEffect, useState } from 'react';
 import { BrowserRouter, Navigate, Outlet, Route, Routes, useLocation, useNavigate, useSearchParams } from 'react-router-dom';
 import './App.css';
@@ -60,6 +61,31 @@ const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
   return <>{children}</>;
 };
 
+const RootRedirect = () => {
+  const token = localStorage.getItem('access_token');
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (token) {
+      // Verify token is still valid
+      axios.get('http://localhost:5000/api/me', {
+        headers: { 'Authorization': `Bearer ${token}` }
+      })
+      .then(() => {
+        navigate('/dashboard');
+      })
+      .catch(() => {
+        localStorage.removeItem('access_token');
+        navigate('/login');
+      });
+    } else {
+      navigate('/login');
+    }
+  }, []);
+
+  return <div>Loading...</div>;
+};
+
 function App() {
   const location = useLocation();
   const isAuthPage = authRoutes.includes(location.pathname);
@@ -69,35 +95,29 @@ function App() {
       minHeight: '100vh',
       display: 'flex',
       flexDirection: 'column',
-      paddingBottom: '0'  // Remove bottom padding
+      paddingBottom: '0'
     }}>
       {!isAuthPage && <Navbar />}
       <div className={`app-content ${isAuthPage ? 'auth-page' : ''}`}>
         <Routes>
+          {/* Public routes */}
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
           <Route path="/forgot-password" element={<ForgotPassword />} />
           <Route path="/reset-password" element={<ResetPassword />} />
-          <Route 
-            path="/dashboard" 
-            element={
-              <PrivateRoute>
-                <Dashboard />
-              </PrivateRoute>
-            } 
-          />
-          <Route path="/documentation" element={<Documentation />} />
-          <Route path="/documentation/top-variances" element={<TopVariancesDoc />} />
-          <Route path="/" element={
-            <ProtectedRoute>
-              <Outlet />
-            </ProtectedRoute>
-          }>
+          
+          {/* Root path handler */}
+          <Route path="/" element={<RootRedirect />} />
+
+          {/* Protected routes */}
+          <Route element={<ProtectedRoute><Outlet /></ProtectedRoute>}>
             <Route path="/dashboard" element={<Dashboard />} />
             <Route path="/documentation" element={<Documentation />} />
-            {/* ...other protected routes... */}
+            <Route path="/documentation/top-variances" element={<TopVariancesDoc />} />
           </Route>
-          <Route path="*" element={<Navigate to="/dashboard" replace />} /> {/* Move catch-all route to end */}
+
+          {/* Fallback */}
+          <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>
       </div>
       <Footer />

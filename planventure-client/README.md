@@ -1,3 +1,22 @@
+# Planventure Client Documentation
+
+## Overview
+React-based frontend application for trip planning and management, built with TypeScript and Material-UI.
+
+## Technical Stack
+- React 18+
+- TypeScript
+- Material-UI
+- Axios for API integration
+
+## Key Features
+- JWT-based authentication
+- Password reset flows
+- Trip management interface
+- Google Maps integration
+
+## Project Structure
+````markdown
 # React + TypeScript + Vite
 
 This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
@@ -52,3 +71,4 @@ export default tseslint.config({
   },
 })
 ```
+````

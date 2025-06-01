@@ -165,5 +165,133 @@ interface DocContent {
           }
         ]
       }
+    },
+    'web-application': {
+      overview: `The PlanVenture web application is built using React, TypeScript, and Material-UI. 
+      It provides a modern interface for managing planning and venture processes.`,
+      
+      setup: `# Development Setup
+      1. Install dependencies: npm install
+      2. Configure environment variables
+      3. Start development server: npm start`,
+      
+      usage: `The application is organized into several key areas:
+      - Authentication & Authorization
+      - Form Management
+      - Documentation System
+      - API Integration`,
+      
+      api: {
+        endpoints: [
+          {
+            method: 'Component Structure',
+            path: '/src/components',
+            description: 'Core React components organized by feature'
+          },
+          {
+            method: 'API Services',
+            path: '/src/services',
+            description: 'API integration and data fetching layer'
+          },
+          {
+            method: 'Utilities',
+            path: '/src/utils',
+            description: 'Common utilities and helper functions'
+          }
+        ]
+      },
+  
+      sections: {
+        architecture: {
+          title: 'Architecture',
+          content: 'Frontend architecture details and design patterns'
+        },
+        stateManagement: {
+          title: 'State Management',
+          content: 'How application state is managed and updated'
+        },
+        routing: {
+          title: 'Routing',
+          content: 'Navigation and route configuration'
+        },
+        styling: {
+          title: 'Styling',
+          content: 'CSS organization and Material-UI theme customization'
+        }
+      }
+    },
+    'planventure-api': {
+      overview: `PlanVenture API is a Flask-based REST API that handles authentication, form management, and email services.`,
+      sections: {
+        authentication: {
+          title: 'Authentication',
+          content: `
+  ## Authentication Endpoints
+  - POST /auth/login
+  - POST /auth/register
+  - POST /auth/forgot-password
+  - POST /auth/reset-password`
+        },
+        emailService: {
+          title: 'Email Service',
+          content: `
+  ## Email Service Components
+  - Password Reset Emails
+  - Token Generation & Validation
+  - Email Templates`
+        },
+        database: {
+          title: 'Database',
+          content: `
+  ## Database Structure
+  - User Management
+  - Form Data Storage
+  - Token Management`
+        }
+      },
+      api: {
+        endpoints: [
+          {
+            method: 'POST',
+            path: '/auth/login',
+            description: 'Authenticate user and return JWT tokens'
+          },
+          {
+            method: 'POST',
+            path: '/auth/reset-password',
+            description: 'Reset user password with valid token'
+          }
+        ]
+      }
+    },
+    'planventure-client': {
+      overview: `React-based frontend application with TypeScript and Material-UI`,
+      sections: {
+        components: {
+          title: 'Components',
+          content: `
+  ## Core Components
+  - Authentication Forms
+  - Documentation System
+  - Navigation
+  - Form Management`
+        },
+        routing: {
+          title: 'Routing',
+          content: `
+  ## Route Structure
+  - Protected Routes
+  - Public Routes
+  - Navigation Guards`
+        },
+        state: {
+          title: 'State Management',
+          content: `
+  ## Application State
+  - Authentication State
+  - Form State
+  - User Preferences`
+        }
+      }
     }
   };

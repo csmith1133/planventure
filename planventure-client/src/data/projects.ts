@@ -2,10 +2,11 @@ export interface Project {
   id: string;
   title: string;  // changed from name
   description: string;
-  url: string;    // changed from viewPath
+  url?: string;    // Make optional since docs-only projects don't need URLs
   isExternal?: boolean;
-  imageUrl: string;
+  imageUrl?: string; // Make optional since docs-only projects don't need images
   documentationId?: string;
+  documentationOnly?: boolean; // Add this flag
 }
 
 export const projects: Project[] = [
@@ -75,5 +76,14 @@ export const projects: Project[] = [
     url: '/projects/reconciliation',  // changed from viewPath
     imageUrl: 'https://images.unsplash.com/photo-1554224155-6726b3ff858f',
     documentationId: 'project-8'
+  },
+  {
+    id: 'web-application',
+    title: 'PlanVenture Web Application',
+    description: 'Documentation for the PlanVenture web application architecture, components, and development guidelines.',
+    documentationOnly: true // Add this flag
   }
 ];
+
+// Helper function to get visible projects
+export const getVisibleProjects = () => projects.filter(p => !p.documentationOnly);

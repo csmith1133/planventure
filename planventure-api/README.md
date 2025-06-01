@@ -122,3 +122,22 @@ Authorization: Bearer <access_token>
 3. 💾 Commit your changes
 4. 🚀 Push to the branch
 5. 🎯 Open a Pull Request
+
+# Planventure API Documentation
+
+## Overview
+Flask-based REST API that provides authentication, trip management, and user services for the Planventure application.
+
+## Technical Stack
+- Python 3.8+
+- Flask & Flask-SQLAlchemy
+- JWT Authentication
+- SQLite Database (development)
+
+## Key Features
+- User authentication with JWT tokens
+- Password reset flow with email integration
+- Trip management with itinerary support
+- CORS support for frontend integration
+
+## Project Structure

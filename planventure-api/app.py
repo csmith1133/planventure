@@ -13,7 +13,11 @@ from flask_migrate import Migrate
 from models import User
 from oauthlib.oauth2 import WebApplicationClient
 from utils.auth_middleware import auth_required
-from utils.email_service import send_reset_email
+from utils.email_service import (
+    generate_reset_token,
+    send_reset_email,
+    verify_reset_token,
+)
 from utils.jwt import generate_tokens
 from utils.oauth import get_google_config, get_google_provider_cfg, is_allowed_email
 from utils.validation import validate_email, validate_password
@@ -260,30 +264,24 @@ def forgot_password():
                 200,
             )
 
-        reset_token = token_urlsafe(32)
-        user.reset_token = reset_token
-        user.reset_token_expires = datetime.utcnow() + timedelta(hours=1)
-
+        # Generate token using our new system
+        reset_token = generate_reset_token(email)
         reset_link = f"{os.getenv('FRONTEND_URL')}/reset-password?token={reset_token}"
 
         try:
             email_sent = send_reset_email(email, reset_link)
             if email_sent:
-                db.session.commit()
                 logger.info(f"Password reset email sent to: {email}")
                 return jsonify({"message": "Reset link sent successfully"}), 200
             else:
                 logger.error(f"Failed to send reset email to: {email}")
-                db.session.rollback()
                 return jsonify({"message": "Failed to send reset email"}), 500
         except Exception as email_error:
             logger.error(f"Email error: {str(email_error)}")
-            db.session.rollback()
             return jsonify({"message": "Failed to send reset email"}), 500
 
     except Exception as e:
         logger.error(f"Password reset error: {str(e)}")
-        db.session.rollback()
         return jsonify({"message": "Failed to process request"}), 500
 
 
@@ -297,18 +295,17 @@ def reset_password():
         if not token or not new_password:
             return jsonify({"message": "Token and new password are required"}), 400
 
-        user = User.query.filter_by(reset_token=token).first()
-        if (
-            not user
-            or not user.reset_token_expires
-            or user.reset_token_expires < datetime.utcnow()
-        ):
+        # Verify token using our new system
+        email, is_valid = verify_reset_token(token)
+        if not is_valid:
             return jsonify({"message": "Invalid or expired reset token"}), 400
+
+        user = User.query.filter_by(email=email).first()
+        if not user:
+            return jsonify({"message": "User not found"}), 404
 
         # Update password
         user.set_password(new_password)
-        user.reset_token = None
-        user.reset_token_expires = None
         db.session.commit()
 
         return jsonify({"message": "Password updated successfully"}), 200
@@ -330,7 +327,9 @@ def test_email():
         if not email:
             return jsonify({"message": "Email is required"}), 400
 
-        test_link = f"{os.getenv('FRONTEND_URL')}/reset-password?token=test-token-123"
+        # Use our token generation system instead of static token
+        test_token = generate_reset_token(email)
+        test_link = f"{os.getenv('FRONTEND_URL')}/reset-password?token={test_token}"
         email_sent = send_reset_email(email, test_link)
 
         if email_sent:
