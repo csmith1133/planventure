@@ -11,6 +11,7 @@ import Navbar from './components/Navbar';
 import Dashboard from './pages/Dashboard';
 import ForgotPassword from './pages/ForgotPassword';
 import Login from './pages/Login';
+import NotFound from './pages/NotFound';
 import Register from './pages/Register';
 import ResetPassword from './pages/ResetPassword';
 import * as authService from './services/auth';
@@ -116,8 +117,8 @@ function App() {
             <Route path="/documentation/top-variances" element={<TopVariancesDoc />} />
           </Route>
 
-          {/* Fallback */}
-          <Route path="*" element={<Navigate to="/" replace />} />
+          {/* 404 Not Found route */}
+          <Route path="*" element={<NotFound />} />
         </Routes>
       </div>
       <Footer />

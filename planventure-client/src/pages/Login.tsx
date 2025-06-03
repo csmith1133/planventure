@@ -24,6 +24,15 @@ export default function Login() {
   const navigate = useNavigate();
 
   useEffect(() => {
+    // Hide both navbar and footer
+    document.body.classList.add('hide-nav', 'hide-footer');
+    
+    return () => {
+      document.body.classList.remove('hide-nav', 'hide-footer');
+    };
+  }, []);
+
+  useEffect(() => {
     const { token } = authService.checkStoredAuth();
     if (token) {
       navigate('/dashboard');

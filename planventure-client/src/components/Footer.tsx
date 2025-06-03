@@ -1,6 +1,5 @@
 import { Facebook, GitHub, LinkedIn, X, YouTube } from '@mui/icons-material';
 import { IconButton } from '@mui/material';
-import './Footer.css';
 
 const TikTokIcon = () => (
   <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">

@@ -6,9 +6,27 @@
 
 .clocks-grid {
   display: grid;
-  grid-template-columns: repeat(8, 1fr);
-  gap: 0.5rem;
-  max-width: 1400px;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 16px;
+  padding-right: 16px;
+  width: calc(100% - 32px);
+  margin: 0 auto;
+}
+
+/* This targets items in the last row */
+.clocks-grid::after {
+  content: '';
+  grid-column: 1 / -1;
+  height: 0;
+}
+
+/* Automatically center items in last row */
+.clock-card:last-child:nth-child(n + 1) {
+  margin-left: auto;
+}
+
+.clock-card:nth-last-child(-n + 4):first-child,
+.clock-card:nth-last-child(-n + 4):first-child ~ .clock-card {
   margin: 0 auto;
 }
 
@@ -17,6 +35,8 @@
   border-radius: 4px;
   padding: 0.75rem;
   min-width: 150px;
+  width: 100%;
+  max-width: 220px;
 }
 
 .clock-card:last-child {
@@ -88,22 +108,4 @@
 .local-time {
   background: rgba(150, 220, 20, 0.05);
   border: 1px solid #96DC14;
-}
-
-@media (max-width: 1400px) {
-  .clocks-grid {
-    grid-template-columns: repeat(6, 1fr);
-  }
-}
-
-@media (max-width: 1024px) {
-  .clocks-grid {
-    grid-template-columns: repeat(4, 1fr);
-  }
-}
-
-@media (max-width: 768px) {
-  .clocks-grid {
-    grid-template-columns: repeat(2, 1fr);
-  }
 }

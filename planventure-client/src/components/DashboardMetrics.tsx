@@ -13,7 +13,7 @@ export default function DashboardMetrics() {
           <div className="metric-row">
             <div className="value">5,263,795</div>
             <div className="icon-circle">
-              <Package size={32} />
+              <Package size="clamp(24px, 2.5vw + 15px, 30px)" strokeWidth={2} />
             </div>
           </div>
           <div className="label">Boxes YTD</div>
@@ -22,7 +22,7 @@ export default function DashboardMetrics() {
           <div className="metric-row">
             <div className="value">$127,654,232</div>
             <div className="icon-circle">
-              <DollarSign size={32} />
+              <DollarSign size="clamp(24px, 2.5vw + 15px, 30px)" strokeWidth={2} />
             </div>
           </div>
           <div className="label">Revenue YTD</div>

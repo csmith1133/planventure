@@ -1,3 +1,11 @@
+@font-face {
+  font-family: 'Agrandir';
+  src: url('../assets/fonts/Agrandir-Regular.woff2') format('woff2'),
+       url('../assets/fonts/Agrandir-Regular.woff') format('woff');
+  font-weight: normal;
+  font-style: normal;
+}
+
 .small-carousel {
   position: relative;
   display: flex;
@@ -25,6 +33,7 @@
 }
 
 .small-carousel-content h2 {
+  font-family: 'Agrandir', -apple-system, BlinkMacSystemFont, sans-serif;
   font-size: 2rem;
   margin: 0;
 }

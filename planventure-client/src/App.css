@@ -1,7 +1,7 @@
 #root {
   max-width: 1280px;
   margin: 0 auto;
-  padding: 2rem;
+  padding: 0rem 2rem;
   text-align: center;
 }
 
@@ -54,7 +54,6 @@ body {
 
 .app-content {
   padding-top: 20px;  /* Add some top padding */
-  min-height: 100vh;
   width: calc(100vw - 64px);
   display: flex;
   flex-direction: column;

@@ -1,127 +1,127 @@
 .dashboard-metrics {
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-end;  /* Change from flex-start to flex-end */
-    padding: 3rem 2rem;  /* Reduced padding */
-    background: #fff;
-    width: 100%;      /* Use full width instead of max-width */
-  }
-  
-  .metrics-content {
-    flex: 3;  /* Take up 3/4 of the space */
-    max-width: 60%;
-    padding-right: 4rem;
-    display: flex;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;  /* Change from flex-start to flex-end */
+  padding: 3rem 2rem;  /* Reduced padding */
+  background: #fff;
+  width: 100%;      /* Use full width instead of max-width */
+}
+
+.metrics-content {
+  flex: 3;  /* Take up 3/4 of the space */
+  max-width: 60%;
+  padding-right: 4rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;  /* Push content to bottom */
+
+}
+
+.metrics-content h2 {
+  font-size: clamp(20px, 2.5vw + 12px, 40px);
+  font-weight: 600;
+  color: #171717;
+  text-align: left;
+  margin-bottom: 0;
+  line-height: 1;
+  font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", "Helvetica Neue", Arial, sans-serif;
+}
+
+.metrics-content p {
+  font-size: clamp(12px, 1.2vw + 8px, 19px);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  text-align: left;
+  margin: 0;  /* Remove margins to control spacing with flex */
+  margin-top: 6px; /* Adjust spacing to match left side text */
+  font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", "Helvetica Neue", Arial, sans-serif;
+}
+
+.metrics-cta {
+  background: transparent;
+  border: 3px solid #171717;
+  padding: 8px 24px;
+  border-radius: 4px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.metrics-cta:hover {
+  background: #171717;
+  color: #fff;
+}
+
+.metrics-values {
+  display: flex;
+  gap: 2rem;
+  padding-right: 16px;  /* 16px from the right edge */
+  margin-left: auto;  /* Push to the right side */
+}
+
+.dashboard-metric {
+  flex: 0 0 auto;  /* Don't grow or shrink, just use content width */
+  text-align: left;
+  white-space: nowrap;
+}
+
+.dashboard-metric .value {
+  font-size: clamp(20px, 2.5vw + 12px, 40px);
+  font-weight: 600;
+  color: #171717;
+  margin-bottom: 0;
+  line-height: 1;
+  font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", "Helvetica Neue", Arial, sans-serif;
+}
+
+.dashboard-metric .label {
+  font-size: clamp(12px, 1.2vw + 8px, 19px);
+  color: #5c5e62;
+  margin-top: 6px; /* Adjust spacing to match left side text */
+  line-height: 1.4; /* Match left content line height */
+  font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", "Helvetica Neue", Arial, sans-serif;
+}
+
+.metric-row {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.icon-circle {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: #009646;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: 10px;
+}
+
+.icon-circle svg {
+  color: #fff;
+}
+
+@media (max-width: 768px) {
+  .dashboard-metrics {
     flex-direction: column;
-    justify-content: flex-end;  /* Push content to bottom */
- 
-  }
-  
-  .metrics-content h2 {
-    font-size: 40px;
-    font-weight: 600;
-    color: #171717;
     text-align: left;
-    margin-bottom: 0;
-    line-height: 1;
-    font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", "Helvetica Neue", Arial, sans-serif;
+    padding: 2rem;
   }
-  
-  .metrics-content p {
-    font-size: 19px;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
+
+  .metrics-content {
+    max-width: 100%;
+    padding-right: 0;
+    margin-bottom: 2rem;
     text-align: left;
-    margin: 0;  /* Remove margins to control spacing with flex */
-    margin-top: 6px; /* Adjust spacing to match left side text */
-    font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", "Helvetica Neue", Arial, sans-serif;
   }
-  
-  .metrics-cta {
-    background: transparent;
-    border: 3px solid #171717;
-    padding: 8px 24px;
-    border-radius: 4px;
-    font-size: 14px;
-    font-weight: 600;
-    cursor: pointer;
-    transition: all 0.2s ease;
-  }
-  
-  .metrics-cta:hover {
-    background: #171717;
-    color: #fff;
-  }
-  
+
   .metrics-values {
-    display: flex;
-    gap: 2rem;
-    padding-right: 16px;  /* 16px from the right edge */
-    margin-left: auto;  /* Push to the right side */
-  }
-  
-  .dashboard-metric {
-    flex: 0 0 auto;  /* Don't grow or shrink, just use content width */
-    text-align: left;
-    white-space: nowrap;
-  }
-  
-  .dashboard-metric .value {
-    font-size: 40px;
-    font-weight: 600;
-    color: #171717;
-    margin-bottom: 0;
-    line-height: 1;
-    font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", "Helvetica Neue", Arial, sans-serif;
-  }
-  
-  .dashboard-metric .label {
-    font-size: 19px;
-    color: #5c5e62;
-    margin-top: 6px; /* Adjust spacing to match left side text */
-    line-height: 1.4; /* Match left content line height */
-    font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", "Helvetica Neue", Arial, sans-serif;
-  }
-  
-  .metric-row {
-    display: flex;
-    align-items: center;
-    gap: 4px;
-  }
-  
-  .icon-circle {
-    width: 40px;
-    height: 40px;
-    border-radius: 50%;
-    background: #009646;
-    display: flex;
-    align-items: center;
+    padding-right: 0;
+    width: 100%;
     justify-content: center;
-    margin-right: 10px;
   }
-  
-  .icon-circle svg {
-    color: #fff;
-  }
-  
-  @media (max-width: 768px) {
-    .dashboard-metrics {
-      flex-direction: column;
-      text-align: left;
-      padding: 2rem;
-    }
-  
-    .metrics-content {
-      max-width: 100%;
-      padding-right: 0;
-      margin-bottom: 2rem;
-      text-align: left;
-    }
-  
-    .metrics-values {
-      padding-right: 0;
-      width: 100%;
-      justify-content: center;
-    }
-  }
+}
