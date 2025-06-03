@@ -9,6 +9,7 @@ const HFLogo = () => (
     fill="#96DC14" 
     style={{ 
       transform: 'translateY(-8px)',
+      
       margin: '0 8px'
     }}
   >

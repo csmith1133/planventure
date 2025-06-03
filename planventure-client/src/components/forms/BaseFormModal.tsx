@@ -111,9 +111,26 @@ export function BaseFormModal({
         dividers 
         sx={{ 
           p: 3,
-          overflowY: 'auto',  // Keep content scrollable
+          overflowY: 'auto',
           flex: '1 1 auto',
-          borderBottom: 'none'  // Remove bottom border
+          borderBottom: 'none',
+          '&::-webkit-scrollbar': {
+            width: '8px',
+          },
+          '&::-webkit-scrollbar-thumb': {
+            backgroundColor: 'rgba(0, 0, 0, 0)',
+            borderRadius: '4px',
+            transition: 'background-color 0.2s',
+          },
+          '&::-webkit-scrollbar-track': {
+            backgroundColor: 'transparent',
+          },
+          '&:hover::-webkit-scrollbar-thumb': {
+            backgroundColor: 'rgba(0, 0, 0, 0.2)',
+          },
+          '&:active::-webkit-scrollbar-thumb': {
+            backgroundColor: 'rgba(0, 0, 0, 0.3)',
+          }
         }}
       >
         <form id={formId} onSubmit={onSubmit}>

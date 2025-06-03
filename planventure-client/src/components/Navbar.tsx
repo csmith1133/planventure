@@ -1,38 +1,12 @@
 import { Logout, Settings } from '@mui/icons-material';
 import { Avatar } from '@mui/material';
 import axios from 'axios';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
+import { formMenuItems } from '../data/formMenuItems';
 import { projects } from '../data/projects';
 import PurchaseRequestModal from './forms/PurchaseRequestModal';
 import './Navbar.css';
-
-const formMenuItems = [
-  {
-    id: 'purchase-request',
-    name: 'Purchase Request',
-    description: 'Request new purchases',
-    viewPath: '/forms/purchase-request/view',
-  },
-  {
-    id: 'purchase-request',
-    name: 'Travel Request',
-    description: 'Request travel approval',
-    viewPath: '/forms/purchase-request/view',
-  },
-  {
-    id: 'time-off',
-    name: 'Time Off Request',
-    description: 'Submit time off requests',
-    viewPath: '/forms/time-off/view',
-  },
-  {
-    id: 'expense-report',
-    name: 'Expense Report',
-    description: 'Submit expense reports',
-    viewPath: '/forms/expense-report/view',
-  }
-];
 
 const HelloFreshLogo = () => (
   <svg width="120" height="40" viewBox="0 0 1600 522" fill="currentColor">
@@ -50,6 +24,8 @@ export default function Navbar() {
   const [showPurchaseModal, setShowPurchaseModal] = useState(false);
   const [userInitial, setUserInitial] = useState('?');
   const navigate = useNavigate();
+  const projectsDropdownRef = useRef<HTMLDivElement>(null);
+  const formsDropdownRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const token = localStorage.getItem('access_token');
@@ -84,6 +60,29 @@ export default function Navbar() {
     }
   }, []);
 
+  // Close dropdown when clicking outside
+  useEffect(() => {
+    function handleClickOutside(event: MouseEvent) {
+      if (activeDropdown === 'projects' && 
+          projectsDropdownRef.current && 
+          !projectsDropdownRef.current.contains(event.target as Node)) {
+        setActiveDropdown(null);
+      }
+      if (activeDropdown === 'forms' && 
+          formsDropdownRef.current && 
+          !formsDropdownRef.current.contains(event.target as Node)) {
+        setActiveDropdown(null);
+      }
+    }
+
+    if (activeDropdown) {
+      document.addEventListener('mousedown', handleClickOutside);
+    }
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, [activeDropdown]);
+
   // Simplified handlers
   const handleMouseEnter = (menu: string) => setActiveDropdown(menu);
   const handleMouseLeave = () => setActiveDropdown(null);
@@ -93,13 +92,8 @@ export default function Navbar() {
     callback();
   };
 
-  const handleClickWithClose = (callback: () => void) => {
-    setActiveDropdown(null);
-    callback();
-  };
-
   const handleProjectClick = (viewPath: string, isExternal: boolean) => {
-    setActiveDropdown(null);
+    setActiveDropdown(null); // Close dropdown first
     if (isExternal) {
       window.open(viewPath, '_blank');
     } else {
@@ -126,6 +120,7 @@ export default function Navbar() {
             className="nav-item"
             onMouseEnter={() => handleMouseEnter('projects')}
             onMouseLeave={handleMouseLeave}
+            ref={projectsDropdownRef}
           >
             <span className="nav-button">Projects</span>
             <div className={`forms-flyout ${activeDropdown === 'projects' ? 'active' : ''}`}>
@@ -159,6 +154,7 @@ export default function Navbar() {
             className="nav-item"
             onMouseEnter={() => handleMouseEnter('forms')}
             onMouseLeave={handleMouseLeave}
+            ref={formsDropdownRef}
           >
             <span className="nav-button">Forms</span>
             <div className={`forms-flyout ${activeDropdown === 'forms' ? 'active' : ''}`}>
@@ -172,15 +168,20 @@ export default function Navbar() {
                           <div className="form-description">{form.description}</div>
                         </div>
                         <div className="form-actions">
-                          <Link 
-                            to={form.viewPath} 
+                          <button 
+                            onClick={() => {
+                              setActiveDropdown(null); // Close dropdown first
+                              navigate(form.viewPath);
+                            }}
                             className="action-link"
-                            onClick={() => handleClickWithClose(() => navigate(form.viewPath))}
                           >
                             View
-                          </Link>
+                          </button>
                           <button 
-                            onClick={() => handleClickWithClose(() => setShowPurchaseModal(true))}
+                            onClick={() => {
+                              setActiveDropdown(null); // Close dropdown first
+                              setShowPurchaseModal(true);
+                            }}
                             className="action-button"
                           >
                             Submit

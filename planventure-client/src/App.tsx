@@ -1,8 +1,8 @@
 import { CssBaseline } from '@mui/material';
 import { GoogleOAuthProvider } from '@react-oauth/google';
 import axios from 'axios';
-import { useEffect, useState } from 'react';
-import { BrowserRouter, Navigate, Outlet, Route, Routes, useLocation, useNavigate, useSearchParams } from 'react-router-dom';
+import { useEffect } from 'react';
+import { BrowserRouter, Navigate, Outlet, Route, Routes, useLocation, useNavigate } from 'react-router-dom';
 import './App.css';
 import Documentation from './components/Documentation';
 import TopVariancesDoc from './components/documentation/TopVariancesDoc';
@@ -14,42 +14,7 @@ import Login from './pages/Login';
 import NotFound from './pages/NotFound';
 import Register from './pages/Register';
 import ResetPassword from './pages/ResetPassword';
-import * as authService from './services/auth';
 
-function PrivateRoute({ children }: { children: React.ReactNode }) {
-  const [isAuthenticated, setIsAuthenticated] = useState<boolean | null>(null);
-  const location = useLocation();
-
-  useEffect(() => {
-    const { token } = authService.checkStoredAuth();
-    setIsAuthenticated(!!token);
-  }, []);
-
-  if (isAuthenticated === null) {
-    return <div>Loading...</div>;
-  }
-
-  return isAuthenticated ? (
-    <>{children}</>
-  ) : (
-    <Navigate to="/login" state={{ from: location }} replace />
-  );
-}
-
-function GoogleCallback() {
-  const navigate = useNavigate();
-  const [searchParams] = useSearchParams();
-
-  useEffect(() => {
-    const token = searchParams.get('token');
-    if (token) {
-      localStorage.setItem('token', token);
-      navigate('/dashboard');
-    }
-  }, [searchParams, navigate]);
-
-  return <div>Loading...</div>;
-}
 
 // Auth routes that should not show navbar
 const authRoutes = ['/login', '/register', '/reset-password', '/forgot-password'];
@@ -82,7 +47,7 @@ const RootRedirect = () => {
     } else {
       navigate('/login');
     }
-  }, []);
+  }, [token, navigate]);
 
   return <div>Loading...</div>;
 };
