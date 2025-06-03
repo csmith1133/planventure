@@ -1,5 +1,5 @@
 import { Alert, Box, Button, Link, Paper, TextField, Typography } from '@mui/material';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Link as RouterLink } from 'react-router-dom';
 import type { AuthError } from '../services/auth';
 import * as authService from '../services/auth';
@@ -27,9 +27,20 @@ export default function ForgotPassword() {
       setIsSubmitting(false);
     }
   };
+    useEffect(() => {
+      // Hide both navbar and footer
+      document.body.classList.add('hide-nav', 'hide-footer');
+      
+      return () => {
+        document.body.classList.remove('hide-nav', 'hide-footer');
+      };
+    }, []);
 
   return (
     <Box className="auth-container">
+      <div class="bg"></div>
+      <div class="bg bg2"></div>
+      <div class="bg bg3"></div>
       <Paper className="auth-card">
         <Typography variant="h4" className="auth-title">
           Reset Password

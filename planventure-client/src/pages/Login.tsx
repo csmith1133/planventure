@@ -1,6 +1,7 @@
 import { Alert, Box, Button, Checkbox, FormControlLabel, Link, Paper, TextField, Typography } from '@mui/material';
 import { useEffect, useState } from 'react';
 import { Link as RouterLink, useNavigate } from 'react-router-dom';
+import logo from '../assets/hf_finfreshq_white.png';
 import type { AuthError } from '../services/auth';
 import * as authService from '../services/auth';
 import '../styles/auth.css';
@@ -74,10 +75,16 @@ export default function Login() {
 
   return (
     <Box className="auth-container">
+      <div class="bg"></div>
+      <div class="bg bg2"></div>
+      <div class="bg bg3"></div>
       <Paper className="auth-card">
-        <Typography variant="h4" className="auth-title" align="center">
-          Login
-        </Typography>
+        <Box sx={{ textAlign: 'center', mb: 3 }}>
+          <img src={logo} alt="Logo" style={{ height: 65, marginBottom: '1rem' }} />
+          <Typography variant="h4" className="auth-title">
+            Login
+          </Typography>
+        </Box>
         {error && <Alert severity="error" sx={{ mb: 2 }}>{error}</Alert>}
         <Box component="form" onSubmit={handleSubmit} className="auth-form">
           <TextField
@@ -121,7 +128,14 @@ export default function Login() {
             <Link 
               component={RouterLink} 
               to="/forgot-password" 
-              sx={{ color: 'white', textDecoration: 'none', '&:hover': { textDecoration: 'underline' } }}
+              sx={{ 
+                color: 'white', 
+                textDecoration: 'none',
+                '&:hover': { 
+                  color: 'white',
+                  opacity: 0.8
+                }
+              }}
             >
               Forgot Password?
             </Link>

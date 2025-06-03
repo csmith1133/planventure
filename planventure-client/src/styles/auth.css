@@ -1,12 +1,9 @@
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@500&display=swap');
 
+
 .auth-container {
   height: 100vh;
   width: 100vw;
-  background-image: url(https://user-images.githubusercontent.com/13468728/233847739-219cb494-c265-4554-820a-bd3424c59065.jpg);
-  background-repeat: no-repeat;
-  background-position: center;
-  background-size: cover;
   position: fixed;
   top: 0;
   left: 0;
@@ -15,6 +12,37 @@
   justify-content: center;
   font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro", "Helvetica Neue", sans-serif;
   overflow: hidden;
+}
+
+/* Add animated background elements */
+.bg {
+  animation: slide 3s ease-in-out infinite alternate;
+  background-image: linear-gradient(-60deg, #009646 50%, #96dc14 50%);
+  bottom: 0;
+  left: -50%;
+  opacity: .5;
+  position: fixed;
+  right: -50%;
+  top: 0;
+  z-index: -1;
+}
+
+.bg2 {
+  animation-direction: alternate-reverse;
+  animation-duration: 4s;
+}
+
+.bg3 {
+  animation-duration: 5s;
+}
+
+@keyframes slide {
+  0% {
+    transform: translateX(-25%);
+  }
+  100% {
+    transform: translateX(25%);
+  }
 }
 
 body.hide-nav.hide-footer {
@@ -36,16 +64,30 @@ body.hide-nav.hide-footer {
   font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro", "Helvetica Neue", sans-serif;
 }
 
+.auth-logo {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 0.5rem;
+}
+
+.auth-logo img {
+  height: 50px;
+  width: auto;
+  margin-right: 16px;
+}
+
 .auth-title {
-  font-size: 2rem !important;
+  font-size: 3rem !important;
   color: #fff !important;
-  text-align: center;
-  margin-bottom: 2rem !important;
+  text-align: center !important;
+  margin-bottom: 0rem !important;
+  font-weight: 600 !important;
 }
 
 .auth-form {
   position: relative;
-  margin: 30px 0;
+  margin: 0;
 }
 
 .auth-form .MuiTextField-root {
@@ -94,7 +136,8 @@ body.hide-nav.hide-footer {
 }
 
 .auth-form .MuiTextField-root input::placeholder {
-  color: rgba(255, 255, 255, 0.8);
+  color: rgba(255, 255, 255, .95);
+  font-weight: 700;
 }
 
 /* Remove label styles since we're not using them */

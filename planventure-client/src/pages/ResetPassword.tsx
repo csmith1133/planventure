@@ -1,5 +1,5 @@
 import { Alert, Box, Button, Paper, TextField, Typography } from '@mui/material';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import type { AuthError } from '../services/auth';
 import * as authService from '../services/auth';
@@ -13,6 +13,14 @@ export default function ResetPassword() {
   const navigate = useNavigate();
   const token = searchParams.get('token');
 
+  useEffect(() => {
+    // Hide both navbar and footer
+    document.body.classList.add('hide-nav', 'hide-footer');
+    
+    return () => {
+      document.body.classList.remove('hide-nav', 'hide-footer');
+    };
+  }, []);
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!token) {
@@ -51,6 +59,9 @@ export default function ResetPassword() {
 
   return (
     <Box className="auth-container">
+            <div class="bg"></div>
+      <div class="bg bg2"></div>
+      <div class="bg bg3"></div>
       <Paper className="auth-card">
         <Typography variant="h4" className="auth-title">
           Set New Password

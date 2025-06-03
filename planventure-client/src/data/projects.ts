@@ -11,6 +11,12 @@ export interface Project {
 
 export const projects: Project[] = [
   {
+    id: 'web-application',
+    title: 'Fin FresHQ',
+    description: 'Documentation for the Fin FresHQ web application architecture, components, and development guidelines.',
+    documentationOnly: true // Add this flag
+  },
+  {
     id: 'top-variances',
     title: 'Top Variances',  // changed from name
     description: 'Financial variance analysis tool',
@@ -76,12 +82,6 @@ export const projects: Project[] = [
     url: '/projects/reconciliation',  // changed from viewPath
     imageUrl: 'https://images.unsplash.com/photo-1554224155-6726b3ff858f',
     documentationId: 'project-8'
-  },
-  {
-    id: 'web-application',
-    title: 'PlanVenture Web Application',
-    description: 'Documentation for the PlanVenture web application architecture, components, and development guidelines.',
-    documentationOnly: true // Add this flag
   }
 ];
 

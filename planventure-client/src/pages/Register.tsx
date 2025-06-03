@@ -1,5 +1,5 @@
 import { Alert, Box, Button, Link, Paper, TextField, Typography } from '@mui/material';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Link as RouterLink, useNavigate } from 'react-router-dom';
 import * as authService from '../services/auth';
 import '../styles/auth.css';
@@ -9,6 +9,14 @@ export default function Register() {
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
   const navigate = useNavigate();
+  useEffect(() => {
+    // Hide both navbar and footer
+    document.body.classList.add('hide-nav', 'hide-footer');
+    
+    return () => {
+      document.body.classList.remove('hide-nav', 'hide-footer');
+    };
+  }, []);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -31,6 +39,9 @@ export default function Register() {
 
   return (
     <Box className="auth-container">
+      <div class="bg"></div>
+      <div class="bg bg2"></div>
+      <div class="bg bg3"></div>
       <Paper className="auth-card">
         <Typography variant="h4" className="auth-title">
           Create Account
