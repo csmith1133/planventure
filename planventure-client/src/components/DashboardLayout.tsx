@@ -1,14 +1,11 @@
 import { Box, Container, Typography } from '@mui/material';
-import { useState } from 'react';
-import { useAuth } from '../hooks/useAuth';
 
 type DashboardLayoutProps = {
   children: React.ReactNode;
 };
 
 export function DashboardLayout({ children }: DashboardLayoutProps) {
-  const [menuOpen, setMenuOpen] = useState(false);
-  const { user } = useAuth();
+
 
   return (
     <Box sx={{ display: 'flex', flexDirection: 'column', minHeight: '100vh' }}>

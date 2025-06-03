@@ -59,9 +59,9 @@ export default function ResetPassword() {
 
   return (
     <Box className="auth-container">
-            <div class="bg"></div>
-      <div class="bg bg2"></div>
-      <div class="bg bg3"></div>
+      <div className="bg"></div>
+      <div className="bg bg2"></div>
+      <div className="bg bg3"></div>
       <Paper className="auth-card">
         <Typography variant="h4" className="auth-title">
           Set New Password

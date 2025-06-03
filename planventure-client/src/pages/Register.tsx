@@ -1,6 +1,7 @@
 import { Alert, Box, Button, Link, Paper, TextField, Typography } from '@mui/material';
 import { useEffect, useState } from 'react';
 import { Link as RouterLink, useNavigate } from 'react-router-dom';
+import type { AuthError } from '../services/auth';
 import * as authService from '../services/auth';
 import '../styles/auth.css';
 
@@ -31,17 +32,18 @@ export default function Register() {
       } else {
         throw new Error('No access token received');
       }
-    } catch (err: any) {
-      const errorMessage = err.response?.data?.message || err.message || 'Registration failed';
+    } catch (err: unknown) {
+      const authError = err as AuthError;
+      const errorMessage = authError.response?.data?.message || 'Registration failed';
       setError(errorMessage);
     }
   };
 
   return (
     <Box className="auth-container">
-      <div class="bg"></div>
-      <div class="bg bg2"></div>
-      <div class="bg bg3"></div>
+      <div className="bg"></div>
+      <div className="bg bg2"></div>
+      <div className="bg bg3"></div>
       <Paper className="auth-card">
         <Typography variant="h4" className="auth-title">
           Create Account

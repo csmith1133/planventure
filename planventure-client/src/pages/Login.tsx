@@ -46,12 +46,9 @@ export default function Login() {
     setIsLoading(true);
     
     try {
-      console.log('Submitting login form...');
-      const response = await authService.login(email, password, rememberMe);
-      console.log('Login successful, navigating...');
+      await authService.login(email, password, rememberMe);
       navigate('/dashboard');
     } catch (err: unknown) {
-      console.error('Login error:', err);
       const authError = err as AuthError;
       setError(authError.response?.data?.message || 'Login failed. Please try again.');
     } finally {
@@ -75,9 +72,9 @@ export default function Login() {
 
   return (
     <Box className="auth-container">
-      <div class="bg"></div>
-      <div class="bg bg2"></div>
-      <div class="bg bg3"></div>
+      <div className="bg"></div>
+      <div className="bg bg2"></div>
+      <div className="bg bg3"></div>
       <Paper className="auth-card">
         <Box sx={{ textAlign: 'center', mb: 3 }}>
           <img src={logo} alt="Logo" style={{ height: 65, marginBottom: '1rem' }} />
